@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Coach>
+@{
+    ViewData["Title"] = "Coach List";
+}
+
+<div>
+    <h2 class="text-center">@ViewData["Title"]</h2>
+    <table class="table">
+        <tr>
+            <th><b>@Html.DisplayNameFor(model => model.PersonInfo.FirstName)</b></th>
+            <th><b>@Html.DisplayNameFor(model => model.PersonInfo.LastName)</b></th>
+            <th><b>@Html.DisplayNameFor(model => model.PersonInfo.Gender.Title)</b></th>
+            <th><b>@Html.DisplayNameFor(model => model.Position.Title)</b></th>
+            <th>@Html.DisplayNameFor(model => model.Specialization.Title)</th>
+        </tr>
+        @foreach (Coach coach in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => coach.PersonInfo.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => coach.PersonInfo.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => coach.PersonInfo.Gender.Title)</td>
+                <td>@Html.DisplayFor(modelItem => coach.Position.Title)</td>
+                <td>@Html.DisplayFor(modelItem => coach.Specialization.Title)</td>
+            </tr>
+        }
+    </table>
+</div>
