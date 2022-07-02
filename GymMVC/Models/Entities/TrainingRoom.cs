@@ -8,12 +8,22 @@ namespace GymMVC.Models.Entities
         public int Id { get; set; }
 
         [Required]
-        public int Title { get; set; }
+        public string Title { get; set; }
 
         [Required]
         public int Floor { get; set; }
 
         [Required]
         public int Number { get; set; }
+
+        public TrainingRoom() { }
+
+        public TrainingRoom(int id, string title, int floor, int number)
+        {
+            Id = id;
+            Title = title;
+            Floor = floor;
+            Number = number;
+        }
     }
 }

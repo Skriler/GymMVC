@@ -12,6 +12,7 @@ namespace GymMVC.Controllers
     public class CoachesController : Controller
     {
         private ApplicationContext db;
+
         public CoachesController(ApplicationContext context)
         {
             db = context;
@@ -23,7 +24,7 @@ namespace GymMVC.Controllers
             List<Coach> coaches = await db.Coaches
                 .Include(c => c.Position)
                 .Include(c => c.Specialization)
-                .Include(c => c.PersonInfo)
+                .Include(c => c.User)
                 .ThenInclude(p => p.Gender)
                 .AsNoTracking()
                 .ToListAsync();

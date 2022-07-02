@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GymMVC.Models.Entities
 {
-    public class PersonInfo
+    public class User
     {
         [Key]
         public int Id { get; set; }
@@ -24,9 +24,11 @@ namespace GymMVC.Models.Entities
         public int GenderId { get; set; }
         public Gender Gender { get; set; }
 
-        public PersonInfo() { }
+        public byte[] PasswordHash { get; set; }
 
-        public PersonInfo(int id, string firstName, string lastName, string email, int genderId)
+        public Person() { }
+
+        public Person(int id, string firstName, string lastName, string email, int genderId)
         {
             Id = id;
             FirstName = firstName;

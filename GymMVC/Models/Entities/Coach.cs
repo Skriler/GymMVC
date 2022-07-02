@@ -9,8 +9,8 @@ namespace GymMVC.Models.Entities
         public int Id { get; set; }
 
         [Required]
-        public int PersonInfoId { get; set; }
-        public PersonInfo PersonInfo { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
 
         public int PositionId { get; set; }
         public Position Position { get; set; }
@@ -20,10 +20,10 @@ namespace GymMVC.Models.Entities
 
         public Coach() { }
 
-        public Coach(int id, int personInfoId, int positionId, int specializationId)
+        public Coach(int id, int userId, int positionId, int specializationId)
         {
             Id = id;
-            PersonInfoId = personInfoId;
+            UserId = userId;
             PositionId = positionId;
             SpecializationId = specializationId;
         }
