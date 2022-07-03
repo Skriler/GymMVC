@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SportComplexMVC.Enums;
 using SportComplexMVC.Models.Entities;
+using SportComplexMVC.Models.DataDb;
 
 namespace SportComplexMVC.Services
 {
@@ -23,6 +25,8 @@ namespace SportComplexMVC.Services
         public static async Task SeedUsersAsync(UserManager<ApplicationUser> userManager)
         {
             List<ApplicationUser> usersForSeed = DataCreator.GetUserList();
+            RoleEnum currentRole = RoleEnum.Client;
+            int counter = 1;
 
             foreach (ApplicationUser userForSeed in usersForSeed)
             {
@@ -32,16 +36,33 @@ namespace SportComplexMVC.Services
 
                     if (user == null)
                     {
-                        await userManager.CreateAsync(userForSeed, defaultPassword);
+                        var result = await userManager.CreateAsync(userForSeed, defaultPassword);
 
-                        foreach (RoleEnum role in Enum.GetValues(typeof(RoleEnum)))
-                        {
-                            await userManager.AddToRoleAsync(userForSeed, role.ToString());
-                        }
+                        if (counter++ <= 5)
+                            currentRole = RoleEnum.Coach;
+                        else
+                            currentRole = RoleEnum.Client;
+
+                        await userManager.AddToRoleAsync(userForSeed, currentRole.ToString());
                     }
 
                 }
             }
+        }
+
+        public static async Task SeedCoachesAndClientsAsync(ApplicationContext db)
+        {
+            DataCreator.SetUserList(await db.Users.AsNoTracking().ToListAsync());
+
+            bool anyCoaches = await db.Coaches.AnyAsync();
+            if (!anyCoaches)
+                await db .Coaches.AddRangeAsync(DataCreator.GetCoachList());
+
+            bool anyClients = await db.Clients.AnyAsync();
+            if (!anyClients)
+                await db.Clients.AddRangeAsync(DataCreator.GetClientList());
+
+            await db.SaveChangesAsync();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SportComplexMVC.Models.Entities;
 using SportComplexMVC.Models.ViewModels;
 using SportComplexMVC.Models.DataDb;
+using SportComplexMVC.Enums;
 
 namespace SportComplexMVC.Controllers
 {
@@ -51,6 +50,7 @@ namespace SportComplexMVC.Controllers
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await userManager.AddToRoleAsync(user, RoleEnum.Client.ToString());
                     await signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }

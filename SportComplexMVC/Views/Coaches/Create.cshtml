@@ -1,11 +1,23 @@
-﻿@model RegisterViewModel
+﻿@model AddCoachViewModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Create coach";
 
     var gendersSelectedListItems = new List<SelectListItem>();
     foreach (Gender gender in Model.Genders)
     {
         gendersSelectedListItems.Add(new SelectListItem { Value = gender.Id.ToString(), Text = gender.Title });
+    }
+
+    var positionsSelectedListItems = new List<SelectListItem>();
+    foreach (Position position in Model.Positions)
+    {
+        positionsSelectedListItems.Add(new SelectListItem { Value = position.Id.ToString(), Text = position.Title });
+    }
+
+    var specializationsSelectedListItems = new List<SelectListItem>();
+    foreach (Specialization specialization in Model.Specializations)
+    {
+        specializationsSelectedListItems.Add(new SelectListItem { Value = specialization.Id.ToString(), Text = specialization.Title });
     }
 }
 
@@ -13,10 +25,10 @@
     <h2 class="text-center">@ViewData["Title"]</h2>
 
     @using (Html.BeginForm(
-     actionName: "Register",
-     controllerName: "Account",
-     method: FormMethod.Post
-     ))
+      actionName: "Create",
+      controllerName: "Coaches",
+      method: FormMethod.Post
+      ))
     {
         <p>* - Required</p>
         @Html.ValidationSummary()
@@ -57,19 +69,25 @@
         </div>
         <br />
         <div>
+            @Html.LabelFor(model => model.PositionId)* <br />
+            @Html.DropDownListFor(model => model.PositionId, positionsSelectedListItems)
+            @Html.ValidationMessageFor(model => model.PositionId)
+        </div>
+        <br />
+        <div>
+            @Html.LabelFor(model => model.SpecializationId)* <br />
+            @Html.DropDownListFor(model => model.SpecializationId, specializationsSelectedListItems)
+            @Html.ValidationMessageFor(model => model.SpecializationId)
+        </div>
+        <br />
+        <div>
             @Html.LabelFor(model => model.Password)* <br />
             @Html.PasswordFor(model => model.Password)
             @Html.ValidationMessageFor(model => model.Password)
         </div>
         <br />
         <div>
-            @Html.LabelFor(model => model.PasswordRepetition)* <br />
-            @Html.PasswordFor(model => model.PasswordRepetition)
-            @Html.ValidationMessageFor(model => model.PasswordRepetition)
-        </div>
-        <br />
-        <div>
-            <input type="submit" value="Register" class="btn btn-success" />
+            <input type="submit" value="Create" class="btn btn-success" />
         </div>
     }
 </div>

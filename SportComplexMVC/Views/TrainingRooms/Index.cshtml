@@ -5,11 +5,16 @@
 
 <div>
     <h2 class="text-center">@ViewData["Title"]</h2>
+
+    <p> @Html.ActionLink("Create new", "Create", "TrainingRooms", null, new { @class = "btn btn-info" }) </p>
+
     <table class="table">
         <tr>
             <th>@Html.DisplayNameFor(model => model.Title)</th>
             <th>@Html.DisplayNameFor(model => model.Floor)</th>
             <th>@Html.DisplayNameFor(model => model.Number)</th>
+
+            <th>Actions</th>
         </tr>
         @foreach (TrainingRoom room in Model)
         {
@@ -17,6 +22,14 @@
                 <td>@Html.DisplayFor(modelItem => room.Title)</td>
                 <td>@Html.DisplayFor(modelItem => room.Floor)</td>
                 <td>@Html.DisplayFor(modelItem => room.Number)</td>
+
+                <td>
+                    <form method="post">
+                        @Html.ActionLink("Edit", "Edit", "TrainingRooms", new { id = room.Id }, new { @class = "btn btn-warning" })
+
+                        <input type="submit" asp-action="Delete" asp-route-id="@room.Id" class="btn btn-danger" value="Delete" />
+                    </form>
+                </td>
             </tr>
         }
     </table>

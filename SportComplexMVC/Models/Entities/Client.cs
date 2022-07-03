@@ -15,9 +15,8 @@ namespace SportComplexMVC.Models.Entities
 
         public Client() { }
 
-        public Client(int id, int clientStatusId, string applicationUserId)
+        public Client(int clientStatusId, string applicationUserId)
         {
-            Id = id;
             ClientStatusId = clientStatusId;
             ApplicationUserId = applicationUserId;
         }

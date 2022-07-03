@@ -112,6 +112,11 @@ namespace SportComplexMVC.Services
             return users;
         }
 
+        public static void SetUserList(List<ApplicationUser> users)
+        {
+            DataCreator.users = users;
+        }
+
         public static List<Coach> GetCoachList()
         {
             List<Coach> coaches = new List<Coach>();
@@ -119,7 +124,7 @@ namespace SportComplexMVC.Services
             Coach coach;
             for (int i = 1; i <= 5; ++i)
             {
-                coach = new Coach(i, rand.Next(1, positionsAmount), rand.Next(1, specializationsAmount), i.ToString());
+                coach = new Coach(rand.Next(1, positionsAmount), rand.Next(1, specializationsAmount), users[i - 1].Id);
                 coaches.Add(coach);
             }
 
@@ -133,7 +138,7 @@ namespace SportComplexMVC.Services
             Client client;
             for (int i = 1; i <= 15; ++i)
             {
-                client = new Client(i, rand.Next(1, clientStatusesAmount), (i + 5).ToString());
+                client = new Client(rand.Next(1, clientStatusesAmount), users[i + 4].Id);
                 clients.Add(client);
             }
 

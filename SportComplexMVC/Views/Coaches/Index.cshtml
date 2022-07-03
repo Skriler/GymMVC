@@ -5,6 +5,9 @@
 
 <div>
     <h2 class="text-center">@ViewData["Title"]</h2>
+
+    <p> @Html.ActionLink("Create new", "Create", "Coaches", null, new { @class = "btn btn-info" }) </p>
+
     <table class="table">
         <tr>
             <th>@Html.DisplayNameFor(model => model.ApplicationUser.FirstName)</th>
@@ -12,6 +15,8 @@
             <th>@Html.DisplayNameFor(model => model.ApplicationUser.Gender.Title)</th>
             <th>@Html.DisplayNameFor(model => model.Position.Title)</th>
             <th>@Html.DisplayNameFor(model => model.Specialization.Title)</th>
+
+            <th>Actions</th>
         </tr>
         @foreach (Coach coach in Model)
         {
@@ -21,6 +26,15 @@
                 <td>@Html.DisplayFor(modelItem => coach.ApplicationUser.Gender.Title)</td>
                 <td>@Html.DisplayFor(modelItem => coach.Position.Title)</td>
                 <td>@Html.DisplayFor(modelItem => coach.Specialization.Title)</td>
+
+                <td>
+                    <form method="post">
+                        @Html.ActionLink("Details", "Details", "Coaches", new { id = coach.Id }, new { @class = "btn btn-info" })
+                        @Html.ActionLink("Edit", "Edit", "Coaches", new { id = coach.Id }, new { @class = "btn btn-warning" })
+
+                        <input type="submit" asp-action="Delete" asp-route-id="@coach.Id" class="btn btn-danger" value="Delete" />
+                    </form>
+                </td>
             </tr>
         }
     </table>

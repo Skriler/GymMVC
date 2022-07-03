@@ -1,0 +1,52 @@
+﻿@model Coach
+@{
+    ViewData["Title"] = "Coach details";
+}
+
+<div class="form-horizontal">
+    <h2 class="text-center">@ViewData["Title"]</h2>
+
+    <div>
+        <b>@Html.LabelFor(model => model.ApplicationUser.FirstName)</b> <br />
+        @Html.DisplayFor(model => model.ApplicationUser.FirstName)
+    </div>
+    <br />
+    <div>
+        <b>@Html.LabelFor(model => model.ApplicationUser.LastName)</b> <br />
+        @Html.DisplayFor(model => model.ApplicationUser.LastName)
+    </div>
+    <br />
+    <div>
+        <b>@Html.LabelFor(model => model.ApplicationUser.BirthDate)</b> <br />
+        @Html.DisplayFor(model => model.ApplicationUser.BirthDate)
+    </div>
+    <br />
+    <div>
+        <b>@Html.LabelFor(model => model.ApplicationUser.Email)</b> <br />
+        @Html.DisplayFor(model => model.ApplicationUser.Email)
+    </div>
+    <br />
+    <div>
+        <b>@Html.LabelFor(model => model.ApplicationUser.PhoneNumber)</b> <br />
+        @Html.DisplayFor(model => model.ApplicationUser.PhoneNumber)
+    </div>
+    <br />
+    <div>
+        <b>@Html.LabelFor(model => model.ApplicationUser.Gender.Title)</b> <br />
+        @Html.DisplayFor(model => model.ApplicationUser.Gender.Title)
+    </div>
+    <br />
+    <div>
+        <b>@Html.LabelFor(model => model.Position.Title)</b> <br />
+        @Html.DisplayFor(model => model.Position.Title)
+    </div>
+    <br />
+    <div>
+        <b>@Html.LabelFor(model => model.Specialization.Title)</b> <br />
+        @Html.DisplayFor(model => model.Specialization.Title)
+    </div>
+    <br />
+    <div>
+        @Html.ActionLink("Back to list", "Index", "Coaches", null, new { @class = "btn btn-info" })
+    </div>
+</div>

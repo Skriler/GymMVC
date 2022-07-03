@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using SportComplexMVC.Services;
@@ -13,6 +15,7 @@ namespace SportComplexMVC.Models.DataDb
         public DbSet<Gender> Genders { get; set; }
         public DbSet<Position> Positions { get; set; } 
         public DbSet<Specialization> Specializations { get; set; }
+        public DbSet<ClientStatus> ClientStatuses { get; set; }
         public DbSet<TrainingRoom> TrainingRooms { get; set; }
         public DbSet<Group> Groups { get; set; }
 
@@ -28,6 +31,7 @@ namespace SportComplexMVC.Models.DataDb
 
             builder.Entity<ApplicationUser>().ToTable(name: "Users");
             builder.Entity<IdentityRole>().ToTable(name: "Roles");
+            builder.Entity<IdentityUserRole<string>>().ToTable(name: "UserRoles");
 
             builder.Entity<Gender>().HasData(
                 DataCreator.GetGenderList()
@@ -44,14 +48,6 @@ namespace SportComplexMVC.Models.DataDb
             builder.Entity<ClientStatus>().HasData(
                 DataCreator.GetClientStatusList()
                 );
-
-            //builder.Entity<Coach>().HasData(
-            //    DataCreator.GetCoachList()
-            //    );
-
-            //builder.Entity<Client>().HasData(
-            //    DataCreator.GetClientList()
-            //    );
 
             builder.Entity<TrainingRoom>().HasData(
                 DataCreator.GetTrainingRoomList()

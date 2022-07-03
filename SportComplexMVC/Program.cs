@@ -8,9 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using SportComplexMVC.Services;
 using SportComplexMVC.Models.DataDb;
 using SportComplexMVC.Models.Entities;
+using SportComplexMVC.Services.DAL;
 
 namespace SportComplexMVC
 {
@@ -31,6 +33,7 @@ namespace SportComplexMVC
 
                     await DataSeeder.SeedRolesAsync(roleManager);
                     await DataSeeder.SeedUsersAsync(userManager);
+                    await DataSeeder.SeedCoachesAndClientsAsync(context);
                 }
                 catch (Exception ex)
                 {

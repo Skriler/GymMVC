@@ -25,5 +25,74 @@ namespace SportComplexMVC.Controllers
 
             return View(trainingRooms);
         }
+
+        [HttpGet]
+        public ViewResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateAsync(TrainingRoom trainingRoom)
+        {
+            if (!ModelState.IsValid)
+                return View(trainingRoom);
+
+            db.TrainingRooms.Add(trainingRoom);
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> EditAsync(int? id)
+        {
+            if (id == null)
+                return RedirectToAction("Index");
+
+            TrainingRoom trainingRoom = await db.TrainingRooms.FindAsync(id);
+
+            if (trainingRoom == null)
+                return RedirectToAction("Index");
+
+            return View(trainingRoom);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> EditAsync(TrainingRoom trainingRoom)
+        {
+            if (!ModelState.IsValid)
+                return View(trainingRoom);
+
+            db.Attach(trainingRoom).State = EntityState.Modified;
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<RedirectToActionResult> DeleteAsync(int? id)
+        {
+            if (id == null)
+                return RedirectToAction("Index");
+
+            TrainingRoom trainingRoom = await db.TrainingRooms.FindAsync(id);
+
+            if (trainingRoom != null)
+            {
+                db.TrainingRooms.Remove(trainingRoom);
+                await db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

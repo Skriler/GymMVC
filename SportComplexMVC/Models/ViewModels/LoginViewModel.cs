@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using SportComplexMVC.Models.Entities;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SportComplexMVC.Models.ViewModels
 {

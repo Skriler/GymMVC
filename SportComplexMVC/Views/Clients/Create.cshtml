@@ -1,11 +1,17 @@
-﻿@model RegisterViewModel
+﻿@model AddClientViewModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Create client";
 
     var gendersSelectedListItems = new List<SelectListItem>();
     foreach (Gender gender in Model.Genders)
     {
         gendersSelectedListItems.Add(new SelectListItem { Value = gender.Id.ToString(), Text = gender.Title });
+    }
+
+    var clientStatusesSelectedListItems = new List<SelectListItem>();
+    foreach (ClientStatus clientStatus in Model.ClientStatuses)
+    {
+        clientStatusesSelectedListItems.Add(new SelectListItem { Value = clientStatus.Id.ToString(), Text = clientStatus.Title });
     }
 }
 
@@ -13,10 +19,10 @@
     <h2 class="text-center">@ViewData["Title"]</h2>
 
     @using (Html.BeginForm(
-     actionName: "Register",
-     controllerName: "Account",
-     method: FormMethod.Post
-     ))
+         actionName: "Create",
+         controllerName: "Clients",
+         method: FormMethod.Post
+         ))
     {
         <p>* - Required</p>
         @Html.ValidationSummary()
@@ -57,19 +63,19 @@
         </div>
         <br />
         <div>
+            @Html.LabelFor(model => model.ClientStatusId)* <br />
+            @Html.DropDownListFor(model => model.ClientStatusId, clientStatusesSelectedListItems)
+            @Html.ValidationMessageFor(model => model.ClientStatusId)
+        </div>
+        <br />
+        <div>
             @Html.LabelFor(model => model.Password)* <br />
             @Html.PasswordFor(model => model.Password)
             @Html.ValidationMessageFor(model => model.Password)
         </div>
         <br />
         <div>
-            @Html.LabelFor(model => model.PasswordRepetition)* <br />
-            @Html.PasswordFor(model => model.PasswordRepetition)
-            @Html.ValidationMessageFor(model => model.PasswordRepetition)
-        </div>
-        <br />
-        <div>
-            <input type="submit" value="Register" class="btn btn-success" />
+            <input type="submit" value="Create" class="btn btn-success" />
         </div>
     }
 </div>

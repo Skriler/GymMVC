@@ -18,9 +18,8 @@ namespace SportComplexMVC.Models.Entities
 
         public Coach() { }
 
-        public Coach(int id, int positionId, int specializationId, string applicationUserId)
+        public Coach(int positionId, int specializationId, string applicationUserId)
         {
-            Id = id;
             PositionId = positionId;
             SpecializationId = specializationId;
             ApplicationUserId = applicationUserId;
