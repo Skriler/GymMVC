@@ -13,11 +13,11 @@ namespace SportComplexMVC.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private ApplicationContext db;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext context)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ApplicationContext context)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -37,7 +37,7 @@ namespace SportComplexMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User
+                ApplicationUser user = new ApplicationUser
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,

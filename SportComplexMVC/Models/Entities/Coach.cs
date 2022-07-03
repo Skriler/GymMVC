@@ -7,24 +7,23 @@ namespace SportComplexMVC.Models.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
-        public User User { get; set; }
-
         public int PositionId { get; set; }
         public Position Position { get; set; }
 
         public int SpecializationId { get; set; }
         public Specialization Specialization { get; set; }
 
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+
         public Coach() { }
 
-        public Coach(int id, int userId, int positionId, int specializationId)
+        public Coach(int id, int positionId, int specializationId, string applicationUserId)
         {
             Id = id;
-            UserId = userId;
             PositionId = positionId;
             SpecializationId = specializationId;
+            ApplicationUserId = applicationUserId;
         }
     }
 }

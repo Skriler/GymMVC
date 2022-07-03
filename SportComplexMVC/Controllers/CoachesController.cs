@@ -24,7 +24,7 @@ namespace SportComplexMVC.Controllers
             List<Coach> coaches = await db.Coaches
                 .Include(c => c.Position)
                 .Include(c => c.Specialization)
-                .Include(c => c.User)
+                .Include(c => c.ApplicationUser)
                 .ThenInclude(p => p.Gender)
                 .AsNoTracking()
                 .ToListAsync();

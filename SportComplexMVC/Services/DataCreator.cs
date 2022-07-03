@@ -7,41 +7,47 @@ namespace SportComplexMVC.Services
 {
     public static class DataCreator
     {
-        //private static List<User> users;
+        private static int positionsAmount;
+        private static int specializationsAmount;
+        private static int clientStatusesAmount;
 
-        //static DataCreator()
-        //{
-        //    users = CreateUserList();
-        //}
+        private static readonly Random rand;
+        private static List<ApplicationUser> users;
 
-        //private static List<User> CreateUserList()
-        //{
-        //    List<User> peopleInfo = new List<User>()
-        //    {
-        //        new User(1, "Huntley", "Predohl", "hpredohl0@icio.us", 1),
-        //        new User(2, "Carmen", "Mancell", "cmancell1@spotify.com", 1),
-        //        new User(3, "Mel", "Stoeck", "mstoeck2@telegraph.co.uk", 1),
-        //        new User(4, "Orsola", "Feldheim", "ofeldheim3@twitter.com", 2),
-        //        new User(5, "Kirbie", "Kleiser", "kkleiser4@latimes.com", 2),
-        //        new User(6, "Krispin", "Pires", "kpires5@wikispaces.com", 1),
-        //        new User(7, "Brigham", "Denisovich", "bdenisovich6@quantcast.com", 1),
-        //        new User(8, "Fin", "Andryszczak", "fandryszczak7@noaa.gov", 1),
-        //        new User(9, "Brigham", "Tonner", "btonner8@cbc.ca", 1),
-        //        new User(10, "Kinna", "Boutton", "kboutton9@admin.ch", 2),
-        //        new User(11, "Janean", "Shotboult", "jshotboult0@soundcloud.com", 1),
-        //        new User(12, "Erroll", "Hethron", "ehethron1@slate.com", 2),
-        //        new User(13, "Margot", "Thieme", "mthieme2@oaic.gov.au", 2),
-        //        new User(14, "Tudor", "Ancliffe", "tancliffe3@rakuten.co.jp", 1),
-        //        new User(15, "Tony", "Bartrap", "tbartrap4@sohu.com", 1),
-        //        new User(16, "Emmery", "Rue", "erue5@scientificamerican.com", 2),
-        //        new User(17, "Twila", "Conrart", "tconrart6@ftc.gov", 2),
-        //        new User(18, "Rochester", "Colleymore", "rcolleymore7@dmoz.org", 1),
-        //        new User(19, "Erroll", "Cardenosa", "ecardenosa8@toplist.cz", 1),
-        //        new User(20, "Bibbie", "Sizzey", "bsizzey9@umich.edu", 2)
-        //    };
+        static DataCreator()
+        {
+            rand = new Random();
+            users = CreateUserList();
+        }
 
-        //    return peopleInfo;
-        //}
+        private static List<ApplicationUser> CreateUserList()
+        {
+            List<ApplicationUser> peopleInfo = new List<ApplicationUser>()
+            {
+                new ApplicationUser("Huntley", "Predohl", "hpredohl0@icio.us", 1),
+                new ApplicationUser("Carmen", "Mancell", "cmancell1@spotify.com", 1),
+                new ApplicationUser("Mel", "Stoeck", "mstoeck2@telegraph.co.uk", 1),
+                new ApplicationUser("Orsola", "Feldheim", "ofeldheim3@twitter.com", 2),
+                new ApplicationUser("Kirbie", "Kleiser", "kkleiser4@latimes.com", 2),
+                new ApplicationUser("Krispin", "Pires", "kpires5@wikispaces.com", 1),
+                new ApplicationUser("Brigham", "Denisovich", "bdenisovich6@quantcast.com", 1),
+                new ApplicationUser("Fin", "Andryszczak", "fandryszczak7@noaa.gov", 1),
+                new ApplicationUser("Brigham", "Tonner", "btonner8@cbc.ca", 1),
+                new ApplicationUser("Kinna", "Boutton", "kboutton9@admin.ch", 2),
+                new ApplicationUser("Janean", "Shotboult", "jshotboult0@soundcloud.com", 1),
+                new ApplicationUser("Erroll", "Hethron", "ehethron1@slate.com", 2),
+                new ApplicationUser("Margot", "Thieme", "mthieme2@oaic.gov.au", 2),
+                new ApplicationUser("Tudor", "Ancliffe", "tancliffe3@rakuten.co.jp", 1),
+                new ApplicationUser("Tony", "Bartrap", "tbartrap4@sohu.com", 1),
+                new ApplicationUser("Emmery", "Rue", "erue5@scientificamerican.com", 2),
+                new ApplicationUser("Twila", "Conrart", "tconrart6@ftc.gov", 2),
+                new ApplicationUser("Rochester", "Colleymore", "rcolleymore7@dmoz.org", 1),
+                new ApplicationUser("Erroll", "Cardenosa", "ecardenosa8@toplist.cz", 1),
+                new ApplicationUser("Bibbie", "Sizzey", "bsizzey9@umich.edu", 2)
+            };
+
+            return peopleInfo;
+        }
 
         public static List<Gender> GetGenderList()
         {
@@ -66,6 +72,8 @@ namespace SportComplexMVC.Services
                 positions.Add(new Position(currentId++, position.ToString()));
             }
 
+            positionsAmount = positions.Count;
+
             return positions;
         }
 
@@ -79,26 +87,57 @@ namespace SportComplexMVC.Services
                 specializations.Add(new Specialization(currentId++, specialization.ToString()));
             }
 
+            specializationsAmount = specializations.Count;
+
             return specializations;
         }
 
-        //public static List<User> GetUserList()
-        //{
-        //    return users;
-        //}
+        public static List<ClientStatus> GetClientStatusList()
+        {
+            List<ClientStatus> clientStatuses = new List<ClientStatus>();
+            int currentId = 1;
+
+            foreach (ClientStatusEnum clientStatus in Enum.GetValues(typeof(ClientStatusEnum)))
+            {
+                clientStatuses.Add(new ClientStatus(currentId++, clientStatus.ToString()));
+            }
+
+            clientStatusesAmount = clientStatuses.Count;
+
+            return clientStatuses;
+        }
+
+        public static List<ApplicationUser> GetUserList()
+        {
+            return users;
+        }
 
         public static List<Coach> GetCoachList()
         {
-            List<Coach> coaches = new List<Coach>()
+            List<Coach> coaches = new List<Coach>();
+
+            Coach coach;
+            for (int i = 1; i <= 5; ++i)
             {
-                new Coach(1, 1, 1, 1),
-                new Coach(2, 2, 1, 2),
-                new Coach(3, 3, 2, 3),
-                new Coach(4, 4, 2, 4),
-                new Coach(5, 5, 3, 5),
-            };
+                coach = new Coach(i, rand.Next(1, positionsAmount), rand.Next(1, specializationsAmount), i.ToString());
+                coaches.Add(coach);
+            }
 
             return coaches;
+        }
+
+        public static List<Client> GetClientList()
+        {
+            List<Client> clients = new List<Client>();
+
+            Client client;
+            for (int i = 1; i <= 15; ++i)
+            {
+                client = new Client(i, rand.Next(1, clientStatusesAmount), (i + 5).ToString());
+                clients.Add(client);
+            }
+
+            return clients;
         }
 
         public static List<TrainingRoom> GetTrainingRoomList()

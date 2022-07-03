@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
 namespace SportComplexMVC.Models.Entities
 {
-    public class User : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         [Required]
         [Display(Name = "First name")]
@@ -21,13 +22,14 @@ namespace SportComplexMVC.Models.Entities
         public int GenderId { get; set; }
         public Gender Gender { get; set; }
 
-        public User() { }
+        public ApplicationUser() { }
 
-        public User(string firstName, string lastName, string email, int genderId)
+        public ApplicationUser(string firstName, string lastName, string email, int genderId)
         {
             FirstName = firstName;
             LastName = lastName;
             Email = email;
+            UserName = email;
             GenderId = genderId;
         }
     }

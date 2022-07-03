@@ -7,18 +7,18 @@
     <h2 class="text-center">@ViewData["Title"]</h2>
     <table class="table">
         <tr>
-            <th>@Html.DisplayNameFor(model => model.User.FirstName)</th>
-            <th>@Html.DisplayNameFor(model => model.User.LastName)</th>
-            <th>@Html.DisplayNameFor(model => model.User.Gender.Title)</th>
+            <th>@Html.DisplayNameFor(model => model.ApplicationUser.FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.ApplicationUser.LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.ApplicationUser.Gender.Title)</th>
             <th>@Html.DisplayNameFor(model => model.Position.Title)</th>
             <th>@Html.DisplayNameFor(model => model.Specialization.Title)</th>
         </tr>
         @foreach (Coach coach in Model)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => coach.User.FirstName)</td>
-                <td>@Html.DisplayFor(modelItem => coach.User.LastName)</td>
-                <td>@Html.DisplayFor(modelItem => coach.User.Gender.Title)</td>
+                <td>@Html.DisplayFor(modelItem => coach.ApplicationUser.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => coach.ApplicationUser.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => coach.ApplicationUser.Gender.Title)</td>
                 <td>@Html.DisplayFor(modelItem => coach.Position.Title)</td>
                 <td>@Html.DisplayFor(modelItem => coach.Specialization.Title)</td>
             </tr>

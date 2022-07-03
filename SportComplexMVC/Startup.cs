@@ -30,7 +30,7 @@ namespace SportComplexMVC
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
                 );
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddControllersWithViews();
