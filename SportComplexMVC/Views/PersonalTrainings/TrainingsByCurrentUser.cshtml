@@ -1,0 +1,50 @@
+﻿@model IEnumerable<PersonalTraining>
+@{
+    ViewData["Title"] = "My personal training list";
+}
+
+<div>
+    <h2 class="text-center">@ViewData["Title"]</h2>
+
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Date)</th>
+
+            @if (User.IsInRole("Client"))
+            {
+                <th>Coach</th>
+            }
+
+            @if (User.IsInRole("Coach"))
+            {
+                <th>Client</th>
+            }
+
+            <th>Training Room</th>
+        </tr>
+        @foreach (PersonalTraining personalTraining in Model)
+        {
+            <tr>
+                <td>@personalTraining.Date.ToShortDateString()</td>
+
+                @if (User.IsInRole("Client"))
+                {
+                    <td>
+                        @personalTraining.Coach.ApplicationUser.FirstName
+                        @personalTraining.Coach.ApplicationUser.LastName
+                    </td>
+                }
+
+                @if (User.IsInRole("Coach"))
+                {
+                    <td>
+                        @personalTraining.Client.ApplicationUser.FirstName
+                        @personalTraining.Client.ApplicationUser.LastName
+                    </td>
+                }
+
+                <td>@Html.DisplayFor(modelItem => personalTraining.TrainingRoom.Title)</td>
+            </tr>
+        }
+    </table>
+</div>

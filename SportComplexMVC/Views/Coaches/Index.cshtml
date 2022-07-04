@@ -6,7 +6,13 @@
 <div>
     <h2 class="text-center">@ViewData["Title"]</h2>
 
-    <p> @Html.ActionLink("Create new", "Create", "Coaches", null, new { @class = "btn btn-info" }) </p>
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (User.IsInRole("Admin"))
+        {
+            <p> @Html.ActionLink("Create new", "Create", "Coaches", null, new { @class = "btn btn-info" }) </p>
+        }
+    }
 
     <table class="table">
         <tr>
@@ -16,7 +22,13 @@
             <th>@Html.DisplayNameFor(model => model.Position.Title)</th>
             <th>@Html.DisplayNameFor(model => model.Specialization.Title)</th>
 
-            <th>Actions</th>
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Admin") || User.IsInRole("Client"))
+                {
+                    <th>Actions</th>
+                }
+            }
         </tr>
         @foreach (Coach coach in Model)
         {
@@ -27,14 +39,27 @@
                 <td>@Html.DisplayFor(modelItem => coach.Position.Title)</td>
                 <td>@Html.DisplayFor(modelItem => coach.Specialization.Title)</td>
 
-                <td>
-                    <form method="post">
-                        @Html.ActionLink("Details", "Details", "Coaches", new { id = coach.Id }, new { @class = "btn btn-info" })
-                        @Html.ActionLink("Edit", "Edit", "Coaches", new { id = coach.Id }, new { @class = "btn btn-warning" })
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                            <form method="post">
+                                @Html.ActionLink("Details", "Details", "Coaches", new { id = coach.Id }, new { @class = "btn btn-info" })
+                                @Html.ActionLink("Edit", "Edit", "Coaches", new { id = coach.Id }, new { @class = "btn btn-warning" })
 
-                        <input type="submit" asp-action="Delete" asp-route-id="@coach.Id" class="btn btn-danger" value="Delete" />
-                    </form>
-                </td>
+                                <input type="submit" asp-action="Delete" asp-route-id="@coach.Id" class="btn btn-danger" value="Delete" />
+                            </form>
+                        </td>
+                    }
+
+                    if (User.IsInRole("Client"))
+                    {
+                        <td>
+                            @Html.ActionLink("Sign up", "Create", "PersonalTrainings", new { id = coach.Id }, new { @class = "btn btn-primary" })
+                        </td>
+                    }
+                }
             </tr>
         }
     </table>

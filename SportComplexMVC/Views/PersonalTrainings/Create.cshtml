@@ -1,0 +1,49 @@
+﻿@model AddPersonalTrainingViewModel
+@{
+    ViewData["Title"] = "Sign up";
+
+    var trainingRoomsSelectedListItems = new List<SelectListItem>();
+    foreach (TrainingRoom room in Model.TrainingRooms)
+    {
+        trainingRoomsSelectedListItems.Add(new SelectListItem { Value = room.Id.ToString(), Text = room.Title });
+    }
+}
+
+<div class="form-horizontal">
+    <h2 class="text-center">@ViewData["Title"]</h2>
+
+    @using (Html.BeginForm(
+        actionName: "Create",
+        controllerName: "PersonalTrainings",
+        method: FormMethod.Post
+        ))
+    {
+        @Html.ValidationSummary()
+        @Html.HiddenFor(model => model.ClientId)
+        @Html.HiddenFor(model => model.CoachId)
+        <input id="MinDate" name="MinDate" type="hidden" value=@Model.MinDate.ToString("yyyy-MM-dd") />
+        <input id="MaxDate" name="MaxDate" type="hidden" value=@Model.MaxDate.ToString("yyyy-MM-dd") />
+        <div>
+            @Html.LabelFor(model => model.Date) <br />
+            <input id="date" name="date" class="datepicker" value="@Model.Date.ToString("yyyy-MM-dd")" readonly="readonly">
+            @Html.ValidationMessageFor(model => model.Date)
+        </div>
+        <br />
+        <div>
+            @Html.LabelFor(model => model.TrainingRoomId) <br />
+            @Html.DropDownListFor(model => model.TrainingRoomId, trainingRoomsSelectedListItems)
+            @Html.ValidationMessageFor(model => model.TrainingRoomId)
+        </div>
+        <br />
+        <div>
+            @Html.ActionLink("Back to list", "Index", "Coaches", null, new { @class = "btn btn-info" })
+            <input type="submit" value="Create" class="btn btn-success" />
+        </div>
+    }
+</div>
+
+@section Scripts
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_DatePickerPartial");}
+}

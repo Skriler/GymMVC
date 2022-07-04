@@ -1,0 +1,38 @@
+﻿@model ApplicationUser
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="form-horizontal">
+    <h2 class="text-center">@ViewData["Title"]</h2>
+
+    <div>
+        <b>@Html.LabelFor(model => model.FirstName)</b> <br />
+        @Html.DisplayFor(model => model.FirstName)
+    </div>
+    <br />
+    <div>
+        <b>@Html.LabelFor(model => model.LastName)</b> <br />
+        @Html.DisplayFor(model => model.LastName)
+    </div>
+    <br />
+    <div>
+        <b>@Html.LabelFor(model => model.BirthDate)</b> <br />
+        @Html.DisplayFor(model => model.BirthDate)
+    </div>
+    <br />
+    <div>
+        <b>@Html.LabelFor(model => model.Email)</b> <br />
+        @Html.DisplayFor(model => model.Email)
+    </div>
+    <br />
+    <div>
+        <b>@Html.LabelFor(model => model.PhoneNumber)</b> <br />
+        @Html.DisplayFor(model => model.PhoneNumber)
+    </div>
+    <br />
+    <div>
+        <b>@Html.LabelFor(model => model.Gender.Title)</b> <br />
+        @Html.DisplayFor(model => model.Gender.Title)
+    </div>
+</div>

@@ -43,7 +43,8 @@ namespace SportComplexMVC.Services
                 new ApplicationUser("Twila", "Conrart", "tconrart6@ftc.gov", 2),
                 new ApplicationUser("Rochester", "Colleymore", "rcolleymore7@dmoz.org", 1),
                 new ApplicationUser("Erroll", "Cardenosa", "ecardenosa8@toplist.cz", 1),
-                new ApplicationUser("Bibbie", "Sizzey", "bsizzey9@umich.edu", 2)
+                new ApplicationUser("Bibbie", "Sizzey", "bsizzey9@umich.edu", 2),
+                new ApplicationUser("Bob", "Hoiuk", "Hoiuk@gmail.com", 1),
             };
 
             return peopleInfo;
@@ -162,6 +163,44 @@ namespace SportComplexMVC.Services
             };
 
             return trainingRooms;
+        }
+
+        public static List<PersonalTraining> GetPersonalTrainingList()
+        {
+            List<PersonalTraining> personalTrainings = new List<PersonalTraining>()
+            {
+                new PersonalTraining(DateTime.Today.AddDays(2), 2, 5, 1),
+                new PersonalTraining(DateTime.Today.AddDays(2), 3, 7, 10),
+                new PersonalTraining(DateTime.Today.AddDays(1), 2, 9, 3),
+                new PersonalTraining(DateTime.Today.AddDays(1), 4, 2, 6),
+                new PersonalTraining(DateTime.Today, 1, 1, 8),
+                new PersonalTraining(DateTime.Today, 3, 10, 4),
+                new PersonalTraining(DateTime.Today.AddDays(-1), 2, 11, 5),
+                new PersonalTraining(DateTime.Today.AddDays(-1), 4, 6, 7),
+                new PersonalTraining(DateTime.Today.AddDays(-2), 3, 8, 9),
+                new PersonalTraining(DateTime.Today.AddDays(-2), 4, 2, 2),
+            };
+
+            return personalTrainings;
+        }
+
+        public static List<GroupTraining> GetGroupTrainingList()
+        {
+            List<GroupTraining> groupTrainings = new List<GroupTraining>()
+            {
+                new GroupTraining(DateTime.Today.AddDays(-1), 2, 5, 1),
+                new GroupTraining(DateTime.Today.AddDays(-1), 3, 7, 10),
+                new GroupTraining(DateTime.Today.AddDays(-2), 2, 9, 3),
+                new GroupTraining(DateTime.Today.AddDays(-2), 4, 2, 6),
+                new GroupTraining(DateTime.Today.AddDays(-3), 1, 1, 8),
+                new GroupTraining(DateTime.Today.AddDays(-3), 3, 10, 4),
+                new GroupTraining(DateTime.Today.AddDays(-4), 2, 11, 5),
+                new GroupTraining(DateTime.Today.AddDays(-4), 4, 6, 7),
+                new GroupTraining(DateTime.Today.AddDays(-5), 3, 8, 9),
+                new GroupTraining(DateTime.Today.AddDays(-5), 4, 2, 2),
+            };
+
+            return groupTrainings;
         }
     }
 }

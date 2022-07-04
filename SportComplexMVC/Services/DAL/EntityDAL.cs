@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SportComplexMVC.Models.DataDb;
 using SportComplexMVC.Models.Entities;
+using SportComplexMVC.Enums;
+
 
 namespace SportComplexMVC.Services.DAL
 {
@@ -12,10 +16,15 @@ namespace SportComplexMVC.Services.DAL
         protected readonly UserManager<ApplicationUser> userManager;
         protected readonly ApplicationContext db;
 
+        public EntityDAL(ApplicationContext context)
+        {
+            db = context;
+        }
+
         public EntityDAL(UserManager<ApplicationUser> userManager, ApplicationContext context)
+            : this(context)
         {
             this.userManager = userManager;
-            db = context;
         }
 
         public async Task<List<Gender>> GetGenderListAsync()
@@ -36,6 +45,44 @@ namespace SportComplexMVC.Services.DAL
         public async Task<List<ClientStatus>> GetClientStatusListAsync()
         {
             return await db.ClientStatuses.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<List<TrainingRoom>> GetTrainingRoomListAsync()
+        {
+            return await db.TrainingRooms.AsNoTracking().ToListAsync();
+        }
+        public async Task<Client> GetCurrentClient(ClaimsPrincipal currentUser)
+        {
+            Client client = null;
+
+            if (currentUser.IsInRole(RoleEnum.Client.ToString()))
+            {
+                string userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                client = await db.Clients
+                    .Include(c => c.ApplicationUser)
+                    .Where(u => u.ApplicationUser.Id == userId)
+                    .FirstOrDefaultAsync();
+            }
+
+            return client;
+        }
+
+        public async Task<Coach> GetCurrentCoach(ClaimsPrincipal currentUser)
+        {
+            Coach coach = null;
+
+            if (currentUser.IsInRole(RoleEnum.Coach.ToString()))
+            {
+                string userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                coach = await db.Coaches
+                    .Include(c => c.ApplicationUser)
+                    .Where(u => u.ApplicationUser.Id == userId)
+                    .FirstOrDefaultAsync();
+            }
+
+            return coach;
         }
     }
 }

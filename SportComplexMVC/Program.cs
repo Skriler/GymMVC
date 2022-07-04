@@ -31,9 +31,7 @@ namespace SportComplexMVC
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-                    await DataSeeder.SeedRolesAsync(roleManager);
-                    await DataSeeder.SeedUsersAsync(userManager);
-                    await DataSeeder.SeedCoachesAndClientsAsync(context);
+                    await DataSeeder.SeedDatabase(roleManager, userManager, context);
                 }
                 catch (Exception ex)
                 {

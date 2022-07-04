@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SportComplexMVC.Models.Entities;
@@ -24,7 +27,7 @@ namespace SportComplexMVC.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Register()
+        public async Task<ActionResult> RegisterAsync()
         {
             List<Gender> genders = await db.Genders.AsNoTracking().ToListAsync();
 
@@ -32,7 +35,7 @@ namespace SportComplexMVC.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> RegisterAsync(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -76,7 +79,7 @@ namespace SportComplexMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model)
+        public async Task<ActionResult> LoginAsync(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -102,10 +105,24 @@ namespace SportComplexMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Logout()
+        public async Task<RedirectToActionResult> LogoutAsync()
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ViewResult> ProfileAsync()
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            ApplicationUser user = await db.Users
+                .Include(u => u.Gender)
+                .Where(u => u.Id == userId)
+                .FirstOrDefaultAsync();
+
+            return View(user);
         }
     }
 }

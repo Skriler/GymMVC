@@ -29,7 +29,7 @@ namespace SportComplexMVC.Services.DAL
             return clients;
         }
 
-        public async Task<Client> GetClientByIdAsync(int? id)
+        public async Task<Client> GetClientByIdAsync(int id)
         {
             Client client = await db.Clients
                 .Include(c => c.ClientStatus)
@@ -97,7 +97,7 @@ namespace SportComplexMVC.Services.DAL
             }
         }
 
-        public async Task DeleteClientAsync(int? id)
+        public async Task DeleteClientAsync(int id)
         {
             Client client = await db.Clients.FindAsync(id);
 

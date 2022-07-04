@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using SportComplexMVC.Models.Entities;
 using SportComplexMVC.Models.DataDb;
@@ -26,12 +26,14 @@ namespace SportComplexMVC.Controllers
             return View(trainingRooms);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ViewResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> CreateAsync(TrainingRoom trainingRoom)
         {
@@ -44,6 +46,7 @@ namespace SportComplexMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult> EditAsync(int? id)
         {
@@ -58,6 +61,7 @@ namespace SportComplexMVC.Controllers
             return View(trainingRoom);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> EditAsync(TrainingRoom trainingRoom)
         {
@@ -78,6 +82,7 @@ namespace SportComplexMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<RedirectToActionResult> DeleteAsync(int? id)
         {

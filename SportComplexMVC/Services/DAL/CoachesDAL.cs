@@ -30,7 +30,7 @@ namespace SportComplexMVC.Services.DAL
             return coaches;
         }
 
-        public async Task<Coach> GetCoachByIdAsync(int? id)
+        public async Task<Coach> GetCoachByIdAsync(int id)
         {
             Coach coach = await db.Coaches
                 .Include(c => c.Position)
@@ -100,7 +100,7 @@ namespace SportComplexMVC.Services.DAL
             }
         }
 
-        public async Task DeleteCoachAsync(int? id)
+        public async Task DeleteCoachAsync(int id)
         {
             Coach coach = await db.Coaches.FindAsync(id);
 

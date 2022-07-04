@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using SportComplexMVC.Services;
@@ -18,6 +16,8 @@ namespace SportComplexMVC.Models.DataDb
         public DbSet<ClientStatus> ClientStatuses { get; set; }
         public DbSet<TrainingRoom> TrainingRooms { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<PersonalTraining> PersonalTrainings { get; set; }
+        public DbSet<GroupTraining> GroupTrainings { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)

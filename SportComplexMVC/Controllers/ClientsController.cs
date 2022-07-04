@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using SportComplexMVC.Models.Entities;
 using SportComplexMVC.Models.DataDb;
 using SportComplexMVC.Models.ViewModels;
@@ -9,6 +10,7 @@ using SportComplexMVC.Services.DAL;
 
 namespace SportComplexMVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ClientsController : Controller
     {
         private ClientsDAL clientsDAL;
@@ -32,7 +34,7 @@ namespace SportComplexMVC.Controllers
             if (id == null)
                 return RedirectToAction("Index");
 
-            Client client = await clientsDAL.GetClientByIdAsync(id);
+            Client client = await clientsDAL.GetClientByIdAsync((int)id);
 
             if (client == null)
                 return RedirectToAction("Index");
@@ -84,7 +86,7 @@ namespace SportComplexMVC.Controllers
             if (id == null)
                 return RedirectToAction("Index");
 
-            Client client = await clientsDAL.GetClientByIdAsync(id);
+            Client client = await clientsDAL.GetClientByIdAsync((int)id);
 
             if (client == null)
                 return RedirectToAction("Index");
@@ -125,7 +127,7 @@ namespace SportComplexMVC.Controllers
         public async Task<RedirectToActionResult> DeleteAsync(int? id)
         {
             if (id != null)
-                await clientsDAL.DeleteClientAsync(id);
+                await clientsDAL.DeleteClientAsync((int)id);
 
             return RedirectToAction("Index");
         }

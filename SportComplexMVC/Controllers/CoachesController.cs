@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using SportComplexMVC.Models.Entities;
 using SportComplexMVC.Models.DataDb;
@@ -26,13 +27,14 @@ namespace SportComplexMVC.Controllers
             return View(coaches);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult> DetailsAsync(int? id)
         {
             if (id == null)
                 return RedirectToAction("Index");
 
-            Coach coach = await coachesDAL.GetCoachByIdAsync(id);
+            Coach coach = await coachesDAL.GetCoachByIdAsync((int)id);
 
             if (coach == null)
                 return RedirectToAction("Index");
@@ -40,6 +42,7 @@ namespace SportComplexMVC.Controllers
             return View(coach);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ViewResult> CreateAsync()
         {
@@ -53,6 +56,7 @@ namespace SportComplexMVC.Controllers
             return View(coachViewModel);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> CreateAsync(AddCoachViewModel model)
         {
@@ -80,13 +84,14 @@ namespace SportComplexMVC.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult> EditAsync(int? id)
         {
             if (id == null)
                 return RedirectToAction("Index");
 
-            Coach coach = await coachesDAL.GetCoachByIdAsync(id);
+            Coach coach = await coachesDAL.GetCoachByIdAsync((int)id);
 
             if (coach == null)
                 return RedirectToAction("Index");
@@ -110,6 +115,7 @@ namespace SportComplexMVC.Controllers
             return View(coachViewModel);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> EditAsync(EditCoachViewModel model)
         {
@@ -126,11 +132,12 @@ namespace SportComplexMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<RedirectToActionResult> DeleteAsync(int? id)
         {
             if (id != null)
-                await coachesDAL.DeleteCoachAsync(id);
+                await coachesDAL.DeleteCoachAsync((int)id);
 
             return RedirectToAction("Index");
         }

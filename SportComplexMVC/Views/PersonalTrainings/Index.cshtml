@@ -1,0 +1,46 @@
+﻿@model IEnumerable<PersonalTraining>
+@{
+    ViewData["Title"] = "Personal training list";
+}
+
+<div>
+    <h2 class="text-center">@ViewData["Title"]</h2>
+
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Date)</th>
+            <th>Coach</th>
+            <th>Client</th>
+            <th>Training Room</th>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Actions</th>
+            }
+        </tr>
+        @foreach (PersonalTraining personalTraining in Model)
+        {
+            <tr>
+                <td>@personalTraining.Date.ToShortDateString()</td>
+                <td>
+                    @personalTraining.Coach.ApplicationUser.FirstName
+                    @personalTraining.Coach.ApplicationUser.LastName
+                </td>
+                <td>
+                    @personalTraining.Client.ApplicationUser.FirstName
+                    @personalTraining.Client.ApplicationUser.LastName
+                </td>
+                <td>@Html.DisplayFor(modelItem => personalTraining.TrainingRoom.Title)</td>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <form method="post">
+                            <input type="submit" asp-action="Delete" asp-route-id="@personalTraining.Id" class="btn btn-danger" value="Delete" />
+                        </form>
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+</div>
