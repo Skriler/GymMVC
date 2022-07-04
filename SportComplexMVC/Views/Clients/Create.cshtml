@@ -19,13 +19,15 @@
     <h2 class="text-center">@ViewData["Title"]</h2>
 
     @using (Html.BeginForm(
-         actionName: "Create",
-         controllerName: "Clients",
-         method: FormMethod.Post
-         ))
+     actionName: "Create",
+     controllerName: "Clients",
+     method: FormMethod.Post
+     ))
     {
         <p>* - Required</p>
         @Html.ValidationSummary()
+        <input id="MinDate" name="MinDate" type="hidden" value=@Model.MinBirthDate.ToString("yyyy-MM-dd") />
+        <input id="MaxDate" name="MaxDate" type="hidden" value=@Model.MaxBirthDate.ToString("yyyy-MM-dd") />
         <div>
             @Html.LabelFor(model => model.FirstName)* <br />
             @Html.EditorFor(model => model.FirstName)
@@ -39,8 +41,8 @@
         </div>
         <br />
         <div>
-            @Html.LabelFor(model => model.BirthDate) <br />
-            @Html.EditorFor(model => model.BirthDate)
+            <b>@Html.LabelFor(model => model.BirthDate)</b> <br />
+            <input id="birthDate" name="birthDate" class="datepicker" value="@Model.BirthDate.ToString("yyyy-MM-dd")" readonly="readonly">
             @Html.ValidationMessageFor(model => model.BirthDate)
         </div>
         <br />
@@ -77,5 +79,12 @@
         <div>
             <input type="submit" value="Create" class="btn btn-success" />
         </div>
+        <br />
     }
 </div>
+
+@section Scripts
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_DatePickerPartial");}
+}

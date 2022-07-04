@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,7 @@ namespace SportComplexMVC.Controllers
 {
     public class CoachesController : Controller
     {
-        private CoachesDAL coachesDAL;
+        private readonly CoachesDAL coachesDAL;
 
         public CoachesController(UserManager<ApplicationUser> userManager, ApplicationContext context)
         {
@@ -48,6 +49,9 @@ namespace SportComplexMVC.Controllers
         {
             AddCoachViewModel coachViewModel = new AddCoachViewModel()
             {
+                BirthDate = DateTime.Now.AddYears(-30),
+                MinBirthDate = DateTime.Now.AddYears(-70),
+                MaxBirthDate = DateTime.Now.AddYears(-18),
                 Genders = await coachesDAL.GetGenderListAsync(),
                 Positions = await coachesDAL.GetPositionListAsync(),
                 Specializations = await coachesDAL.GetSpecializationListAsync()
@@ -102,6 +106,8 @@ namespace SportComplexMVC.Controllers
                 FirstName = coach.ApplicationUser.FirstName,
                 LastName = coach.ApplicationUser.LastName,
                 BirthDate = coach.ApplicationUser.BirthDate,
+                MinBirthDate = DateTime.Now.AddYears(-70),
+                MaxBirthDate = DateTime.Now.AddYears(-18),
                 Email = coach.ApplicationUser.Email,
                 PhoneNumber = coach.ApplicationUser.PhoneNumber,
                 GenderId = coach.ApplicationUser.GenderId,

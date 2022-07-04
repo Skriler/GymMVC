@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
@@ -10,16 +11,17 @@ using SportComplexMVC.Services.DAL;
 
 namespace SportComplexMVC.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class ClientsController : Controller
     {
-        private ClientsDAL clientsDAL;
+        private readonly ClientsDAL clientsDAL;
 
         public ClientsController(UserManager<ApplicationUser> userManager, ApplicationContext context)
         {
             clientsDAL = new ClientsDAL(userManager, context);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ViewResult> IndexAsync()
         {
@@ -28,6 +30,7 @@ namespace SportComplexMVC.Controllers
             return View(clients);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult> DetailsAsync(int? id)
         {
@@ -42,11 +45,15 @@ namespace SportComplexMVC.Controllers
             return View(client);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ViewResult> CreateAsync()
         {
             AddClientViewModel clientViewModel = new AddClientViewModel()
             {
+                BirthDate = DateTime.Now.AddYears(-30),
+                MinBirthDate = DateTime.Now.AddYears(-70),
+                MaxBirthDate = DateTime.Now.AddYears(-18),
                 Genders = await clientsDAL.GetGenderListAsync(),
                 ClientStatuses = await clientsDAL.GetClientStatusListAsync()
             };
@@ -54,6 +61,7 @@ namespace SportComplexMVC.Controllers
             return View(clientViewModel);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> CreateAsync(AddClientViewModel model)
         {
@@ -80,6 +88,7 @@ namespace SportComplexMVC.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult> EditAsync(int? id)
         {
@@ -97,6 +106,8 @@ namespace SportComplexMVC.Controllers
                 FirstName = client.ApplicationUser.FirstName,
                 LastName = client.ApplicationUser.LastName,
                 BirthDate = client.ApplicationUser.BirthDate,
+                MinBirthDate = DateTime.Now.AddYears(-70),
+                MaxBirthDate = DateTime.Now.AddYears(-18),
                 Email = client.ApplicationUser.Email,
                 PhoneNumber = client.ApplicationUser.PhoneNumber,
                 GenderId = client.ApplicationUser.GenderId,
@@ -108,6 +119,7 @@ namespace SportComplexMVC.Controllers
             return View(clientViewModel);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> EditAsync(EditClientViewModel model)
         {
@@ -123,6 +135,7 @@ namespace SportComplexMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<RedirectToActionResult> DeleteAsync(int? id)
         {
@@ -132,11 +145,22 @@ namespace SportComplexMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin, Client")]
         [HttpPost]
         public async Task<RedirectToActionResult> DeleteClientFromGroupAsync(int? id)
         {
             if (id != null)
                 await clientsDAL.DeleteClientFromGroupAsync((int)id);
+
+            return RedirectToAction("Index", "GroupTrainings");
+        }
+
+        [Authorize(Roles = "Admin, Client")]
+        [HttpPost]
+        public async Task<RedirectToActionResult> AddClientToGroupAsync(int? id)
+        {
+            if (id != null)
+                await clientsDAL.AddClientToGroupAsync(User, (int)id);
 
             return RedirectToAction("Index", "GroupTrainings");
         }

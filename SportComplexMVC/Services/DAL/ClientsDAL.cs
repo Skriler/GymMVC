@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SportComplexMVC.Models.DataDb;
@@ -13,9 +14,13 @@ namespace SportComplexMVC.Services.DAL
 {
     public class ClientsDAL : EntityDAL
     {
+        protected readonly UserManager<ApplicationUser> userManager;
+
         public ClientsDAL(UserManager<ApplicationUser> userManager, ApplicationContext context)
-            : base(userManager, context)
-        { }
+            : base(context)
+        {
+            this.userManager = userManager;
+        }
 
         public async Task<List<Client>> GetClientListAsync()
         {
@@ -111,13 +116,24 @@ namespace SportComplexMVC.Services.DAL
             }
         }
 
-        public async Task DeleteClientFromGroupAsync(int id)
+        public async Task DeleteClientFromGroupAsync(int clientId)
         {
-            Client client = await db.Clients.FindAsync(id);
+            Client client = await db.Clients.FindAsync(clientId);
 
             if (client != null)
             {
                 client.GroupId = null;
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public async Task AddClientToGroupAsync(ClaimsPrincipal currentUser, int groupId)
+        {
+            Client client = await GetCurrentClientAsync(currentUser);
+
+            if (client != null)
+            {
+                client.GroupId = groupId;
                 await db.SaveChangesAsync();
             }
         }

@@ -11,7 +11,7 @@ namespace SportComplexMVC.Controllers
 {
     public class TrainingRoomsController : Controller
     {
-        private ApplicationContext db;
+        private readonly ApplicationContext db;
 
         public TrainingRoomsController(ApplicationContext context)
         {

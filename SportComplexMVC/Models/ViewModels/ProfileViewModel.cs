@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using SportComplexMVC.Models.Entities;
 
 namespace SportComplexMVC.Models.ViewModels
 {
-    public class AddClientViewModel
+    public class ProfileViewModel
     {
+        public int Id { get; set; }
+
         [Required]
         [MinLength(3), MaxLength(30)]
         [Display(Name = "First name")]
@@ -19,8 +19,6 @@ namespace SportComplexMVC.Models.ViewModels
 
         [Display(Name = "Birth date")]
         public DateTime BirthDate { get; set; }
-        public DateTime MinBirthDate { get; set; }
-        public DateTime MaxBirthDate { get; set; }
 
         [Required]
         [MinLength(3), MaxLength(30)]
@@ -31,18 +29,19 @@ namespace SportComplexMVC.Models.ViewModels
         public string PhoneNumber { get; set; }
 
         [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
-
-        [Required]
         [Display(Name = "Gender")]
-        public int GenderId { get; set; }
-        public List<Gender> Genders { get; set; }
+        public string Gender { get; set; }
 
-        [Required]
         [Display(Name = "Client Status")]
-        public int ClientStatusId { get; set; }
-        public List<ClientStatus> ClientStatuses { get; set; }
+        public string ClientStatus { get; set; }
+
+        [Display(Name = "Group")]
+        public string Group { get; set; }
+
+        [Display(Name = "Position")]
+        public string Position { get; set; }
+
+        [Display(Name = "Specialization")]
+        public string Specialization { get; set; }
     }
 }

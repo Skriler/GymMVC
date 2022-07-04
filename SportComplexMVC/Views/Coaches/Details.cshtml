@@ -18,7 +18,7 @@
     <br />
     <div>
         <b>@Html.LabelFor(model => model.ApplicationUser.BirthDate)</b> <br />
-        @Html.DisplayFor(model => model.ApplicationUser.BirthDate)
+        @Model.ApplicationUser.BirthDate.ToString("yyyy-MM-dd")
     </div>
     <br />
     <div>

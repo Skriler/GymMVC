@@ -1,37 +1,38 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using SportComplexMVC.Models.Entities;
-using SportComplexMVC.Models.ViewModels;
 using SportComplexMVC.Models.DataDb;
+using SportComplexMVC.Models.ViewModels;
+using SportComplexMVC.Services.DAL;
 using SportComplexMVC.Enums;
+using SportComplexMVC.Services;
 
 namespace SportComplexMVC.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private ApplicationContext db;
+        private readonly AccountDAL accountDAL;
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ApplicationContext context)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            db = context;
+            accountDAL = new AccountDAL(userManager, signInManager, context);
         }
 
         [HttpGet]
         public async Task<ActionResult> RegisterAsync()
         {
-            List<Gender> genders = await db.Genders.AsNoTracking().ToListAsync();
+            RegisterViewModel registerViewModel = new RegisterViewModel()
+            {
+                Genders = await accountDAL.GetGenderListAsync(),
+                BirthDate = DateTime.Now.AddYears(-30),
+                MinBirthDate = DateTime.Now.AddYears(-70),
+                MaxBirthDate = DateTime.Now.AddYears(-18)
+            };
 
-            return View(new RegisterViewModel() { Genders = genders });
+            return View(registerViewModel);
         }
 
         [HttpPost]
@@ -39,22 +40,10 @@ namespace SportComplexMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new ApplicationUser
-                {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    BirthDate = model.BirthDate,
-                    Email = model.Email,
-                    UserName = model.Email,
-                    PhoneNumber = model.PhoneNumber,
-                    GenderId = model.GenderId,
-                };
+                IdentityResult result = await accountDAL.RegisterAsync(model);
 
-                var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, RoleEnum.Client.ToString());
-                    await signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -66,7 +55,7 @@ namespace SportComplexMVC.Controllers
                 }
             }
 
-            model.Genders = await db.Genders.AsNoTracking().ToListAsync();
+            model.Genders = await accountDAL.GetGenderListAsync();
 
             return View(model);
         }
@@ -83,7 +72,8 @@ namespace SportComplexMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var result = await accountDAL.LoginAsync(model);
+
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
@@ -107,22 +97,56 @@ namespace SportComplexMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<RedirectToActionResult> LogoutAsync()
         {
-            await signInManager.SignOutAsync();
+            await accountDAL.LogoutAsync();
             return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
         [HttpGet]
-        public async Task<ViewResult> ProfileAsync()
+        public async Task<ActionResult> ProfileAsync()
         {
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ProfileViewModel profileViewModel;
 
-            ApplicationUser user = await db.Users
-                .Include(u => u.Gender)
-                .Where(u => u.Id == userId)
-                .FirstOrDefaultAsync();
+            ViewData["IsLeaveButton"] = false;
 
-            return View(user);
+            if (User.IsInRole(RoleEnum.Client.ToString()))
+            {
+                profileViewModel = await accountDAL.GetClientProfileViewModelAsync(User);
+
+                if (DataChecker.CheckIsCurrentClientInGroup(await accountDAL.GetCurrentClientAsync(User)))
+                    ViewData["IsLeaveButton"] = true;
+            }
+            else if (User.IsInRole(RoleEnum.Coach.ToString()))
+            {
+                profileViewModel = await accountDAL.GetCoachProfileViewModelAsync(User);
+            }
+            else
+            {
+                profileViewModel = await accountDAL.GetUserProfileViewModelAsync(User);
+            }
+
+            return View(profileViewModel);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult> EditAsync()
+        {
+            EditProfileViewModel editProfileViewModel = await accountDAL.GetEditUserProfileViewModelAsync(User);
+
+            return View(editProfileViewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult> EditAsync(EditProfileViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            await accountDAL.EditUserAsync(User, model);
+
+            return RedirectToAction("Profile");
         }
     }
 }

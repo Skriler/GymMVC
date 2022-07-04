@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using SportComplexMVC.Models.Entities;
 
@@ -52,6 +53,14 @@ namespace SportComplexMVC.Services
                 if (personalTraining.ClientId == client.Id)
                     return false;
             }
+
+            return true;
+        }
+
+        public static bool CheckIsCurrentClientInGroup(Client client)
+        {
+            if (client.GroupId == null)
+                return false;
 
             return true;
         }

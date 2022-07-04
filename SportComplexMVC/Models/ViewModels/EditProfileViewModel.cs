@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using SportComplexMVC.Models.Entities;
 
 namespace SportComplexMVC.Models.ViewModels
 {
-    public class AddClientViewModel
+    public class EditProfileViewModel
     {
         [Required]
         [MinLength(3), MaxLength(30)]
@@ -29,20 +27,5 @@ namespace SportComplexMVC.Models.ViewModels
 
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
-
-        [Required]
-        [Display(Name = "Gender")]
-        public int GenderId { get; set; }
-        public List<Gender> Genders { get; set; }
-
-        [Required]
-        [Display(Name = "Client Status")]
-        public int ClientStatusId { get; set; }
-        public List<ClientStatus> ClientStatuses { get; set; }
     }
 }

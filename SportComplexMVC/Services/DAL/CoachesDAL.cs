@@ -13,9 +13,13 @@ namespace SportComplexMVC.Services.DAL
 {
     public class CoachesDAL : EntityDAL
     {
+        protected readonly UserManager<ApplicationUser> userManager;
+
         public CoachesDAL(UserManager<ApplicationUser> userManager, ApplicationContext context)
-            : base(userManager, context)
-        { }
+            : base(context)
+        {
+            this.userManager = userManager;
+        }
 
         public async Task<List<Coach>> GetCoachListAsync()
         {

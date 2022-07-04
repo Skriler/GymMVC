@@ -49,6 +49,12 @@
                             {
                                 <input type="submit" asp-action="Delete" asp-route-id="@groupTraining.Id" class="btn btn-danger" value="Delete" />
                             }
+
+                            @if (User.IsInRole("Client") && (bool)ViewData["IsJoinButton"])
+                            {
+                                <input type="submit" asp-action="AddClientToGroup" asp-controller="Clients"
+                                    asp-route-id="@groupTraining.GroupId" class="btn btn-info" value="Join" />
+                            }
                         </form>
                     </td>
                 }

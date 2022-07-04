@@ -15,7 +15,7 @@ namespace SportComplexMVC.Controllers
     [Authorize]
     public class PersonalTrainingsController : Controller
     {
-        private PersonalTrainingsDAL personalTrainingsDAL;
+        private readonly PersonalTrainingsDAL personalTrainingsDAL;
 
         public PersonalTrainingsController(ApplicationContext context)
         {
@@ -39,7 +39,7 @@ namespace SportComplexMVC.Controllers
 
             if (User.IsInRole(RoleEnum.Client.ToString()))
             {
-                Client client = await personalTrainingsDAL.GetCurrentClient(User);
+                Client client = await personalTrainingsDAL.GetCurrentClientAsync(User);
 
                 if (client == null)
                     return RedirectToAction("Index", "Home");
@@ -48,7 +48,7 @@ namespace SportComplexMVC.Controllers
             }
             else
             {
-                Coach coach = await personalTrainingsDAL.GetCurrentCoach(User);
+                Coach coach = await personalTrainingsDAL.GetCurrentCoachAsync(User);
 
                 if (coach == null)
                     return RedirectToAction("Index", "Home");
@@ -66,7 +66,7 @@ namespace SportComplexMVC.Controllers
             if (id == null)
                 return RedirectToAction("Index", "Home");
 
-            Client client = await personalTrainingsDAL.GetCurrentClient(User);
+            Client client = await personalTrainingsDAL.GetCurrentClientAsync(User);
 
             AddPersonalTrainingViewModel addViewModel = new AddPersonalTrainingViewModel()
             {
@@ -96,8 +96,8 @@ namespace SportComplexMVC.Controllers
                     model.Date, 
                     model.CoachId,
                     model.TrainingRoomId,
-                    new List<Client> { personalTrainingsDAL.GetCurrentClient(User).Result } ,
-                    await personalTrainingsDAL.GetGroupIdByClient(User)
+                    new List<Client> { personalTrainingsDAL.GetCurrentClientAsync(User).Result } ,
+                    await personalTrainingsDAL.GetGroupIdByClientAsync(User)
                     ))
             {
                 ModelState.AddModelError(string.Empty, "This time is not available");

@@ -1,4 +1,4 @@
-﻿@model ApplicationUser
+﻿@model ProfileViewModel
 @{
     ViewData["Title"] = "Profile";
 }
@@ -18,7 +18,7 @@
     <br />
     <div>
         <b>@Html.LabelFor(model => model.BirthDate)</b> <br />
-        @Html.DisplayFor(model => model.BirthDate)
+        @Model.BirthDate.ToString("yyyy-MM-dd")
     </div>
     <br />
     <div>
@@ -32,7 +32,48 @@
     </div>
     <br />
     <div>
-        <b>@Html.LabelFor(model => model.Gender.Title)</b> <br />
-        @Html.DisplayFor(model => model.Gender.Title)
+        <b>@Html.LabelFor(model => model.Gender)</b> <br />
+        @Html.DisplayFor(model => model.Gender)
+    </div>
+
+    @if (User.IsInRole("Client"))
+    {
+        <br />
+        <div>
+            <b>@Html.LabelFor(model => model.ClientStatus)</b> <br />
+            @Html.DisplayFor(model => model.ClientStatus)
+        </div>
+        <br />
+        <div>
+            <b>@Html.LabelFor(model => model.Group)</b> <br />
+            @Html.DisplayFor(model => model.Group)
+        </div>
+    }
+
+    @if (User.IsInRole("Coach"))
+    {
+        <br />
+        <div>
+            <b>@Html.LabelFor(model => model.Position)</b> <br />
+            @Html.DisplayFor(model => model.Position)
+        </div>
+        <br />
+        <div>
+            <b>@Html.LabelFor(model => model.Specialization)</b> <br />
+            @Html.DisplayFor(model => model.Specialization)
+        </div>
+    }
+
+    <br />
+    <div>
+        <form method="post">
+            @Html.ActionLink("Edit info", "Edit", "Account", null, new { @class = "btn btn-warning" })
+
+            @if (User.IsInRole("Client") && (bool)ViewData["IsLeaveButton"])
+            {
+                <input type="submit" asp-action="DeleteClientFromGroup" asp-controller="Clients"
+                       asp-route-id="@Model.Id" class="btn btn-danger" value="Leave group" />
+            }
+        </form>
     </div>
 </div>

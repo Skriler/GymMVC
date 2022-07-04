@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
@@ -24,11 +23,13 @@ namespace SportComplexMVC.Models.Entities
 
         public ApplicationUser() { }
 
-        public ApplicationUser(string firstName, string lastName, string email, int genderId)
+        public ApplicationUser(string firstName, string lastName, DateTime birthDate, string email, string phoneNumber, int genderId)
         {
             FirstName = firstName;
             LastName = lastName;
+            BirthDate = birthDate;
             Email = email;
+            PhoneNumber = phoneNumber;
             UserName = email;
             GenderId = genderId;
         }

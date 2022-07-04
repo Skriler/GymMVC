@@ -13,18 +13,11 @@ namespace SportComplexMVC.Services.DAL
 {
     public abstract class EntityDAL
     {
-        protected readonly UserManager<ApplicationUser> userManager;
         protected readonly ApplicationContext db;
 
         public EntityDAL(ApplicationContext context)
         {
             db = context;
-        }
-
-        public EntityDAL(UserManager<ApplicationUser> userManager, ApplicationContext context)
-            : this(context)
-        {
-            this.userManager = userManager;
         }
 
         public async Task<List<Gender>> GetGenderListAsync()
@@ -67,7 +60,7 @@ namespace SportComplexMVC.Services.DAL
             return await db.GroupTrainings.AsNoTracking().ToListAsync();
         }
 
-        public async Task<Client> GetCurrentClient(ClaimsPrincipal currentUser)
+        public async Task<Client> GetCurrentClientAsync(ClaimsPrincipal currentUser)
         {
             Client client = null;
 
@@ -84,7 +77,7 @@ namespace SportComplexMVC.Services.DAL
             return client;
         }
 
-        public async Task<Coach> GetCurrentCoach(ClaimsPrincipal currentUser)
+        public async Task<Coach> GetCurrentCoachAsync(ClaimsPrincipal currentUser)
         {
             Coach coach = null;
 
@@ -101,9 +94,9 @@ namespace SportComplexMVC.Services.DAL
             return coach;
         }
 
-        public async Task<int> GetGroupIdByClient(ClaimsPrincipal currentUser)
+        public async Task<int> GetGroupIdByClientAsync(ClaimsPrincipal currentUser)
         {
-            Client client = await GetCurrentClient(currentUser);
+            Client client = await GetCurrentClientAsync(currentUser);
 
             if (client.GroupId == null)
                 return -1;
@@ -111,7 +104,7 @@ namespace SportComplexMVC.Services.DAL
             return (int)client.GroupId;
         }
 
-        public async Task<List<Client>> GetClientsByGroupId(int groupId)
+        public async Task<List<Client>> GetClientsByGroupIdAsync(int groupId)
         {
             List<Client> clients = await db.Clients
                 .Where(c => c.GroupId == groupId)

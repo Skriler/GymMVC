@@ -1,18 +1,6 @@
-﻿@model EditClientViewModel
+﻿@model EditProfileViewModel
 @{
-    ViewData["Title"] = "Edit client";
-
-    var gendersSelectedListItems = new List<SelectListItem>();
-    foreach (Gender gender in Model.Genders)
-    {
-        gendersSelectedListItems.Add(new SelectListItem { Value = gender.Id.ToString(), Text = gender.Title });
-    }
-
-    var clientStatusesSelectedListItems = new List<SelectListItem>();
-    foreach (ClientStatus clientStatus in Model.ClientStatuses)
-    {
-        clientStatusesSelectedListItems.Add(new SelectListItem { Value = clientStatus.Id.ToString(), Text = clientStatus.Title });
-    }
+    ViewData["Title"] = "Edit info";
 }
 
 <div class="form-horizontal">
@@ -20,12 +8,11 @@
 
     @using (Html.BeginForm(
       actionName: "Edit",
-      controllerName: "Clients",
+      controllerName: "Account",
       method: FormMethod.Post
       ))
     {
         @Html.ValidationSummary()
-        @Html.HiddenFor(model => model.Id)
         <input id="MinDate" name="MinDate" type="hidden" value=@Model.MinBirthDate.ToString("yyyy-MM-dd") />
         <input id="MaxDate" name="MaxDate" type="hidden" value=@Model.MaxBirthDate.ToString("yyyy-MM-dd") />
         <div>
@@ -41,7 +28,7 @@
         </div>
         <br />
         <div>
-            <b>@Html.LabelFor(model => model.BirthDate)</b> <br />
+            @Html.LabelFor(model => model.BirthDate) <br />
             <input id="birthDate" name="birthDate" class="datepicker" value="@Model.BirthDate.ToString("yyyy-MM-dd")" readonly="readonly">
             @Html.ValidationMessageFor(model => model.BirthDate)
         </div>
@@ -59,19 +46,7 @@
         </div>
         <br />
         <div>
-            @Html.LabelFor(model => model.GenderId) <br />
-            @Html.DropDownListFor(model => model.GenderId, gendersSelectedListItems)
-            @Html.ValidationMessageFor(model => model.GenderId)
-        </div>
-        <br />
-        <div>
-            @Html.LabelFor(model => model.ClientStatusId) <br />
-            @Html.DropDownListFor(model => model.ClientStatusId, clientStatusesSelectedListItems)
-            @Html.ValidationMessageFor(model => model.ClientStatusId)
-        </div>
-        <br />
-        <div>
-            @Html.ActionLink("Back to list", "Index", "Clients", null, new { @class = "btn btn-info" })
+            @Html.ActionLink("Back to profile", "Profile", "Account", null, new { @class = "btn btn-info" })
 
             <input type="submit" value="Edit" class="btn btn-success" />
         </div>

@@ -14,7 +14,7 @@ namespace SportComplexMVC.Controllers
     [Authorize]
     public class GroupsController : Controller
     {
-        private GroupsDAL groupsDAL;
+        private readonly GroupsDAL groupsDAL;
 
         public GroupsController(ApplicationContext context)
         {
@@ -30,22 +30,6 @@ namespace SportComplexMVC.Controllers
             Group group = await groupsDAL.GetGroupByIdAsync((int)id);
 
             return View(group);
-        }
-
-        [HttpGet]
-        public async Task<ViewResult> CreateAsync()
-        {
-            return View();
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public async Task<RedirectToActionResult> DeleteAsync(int? id)
-        {
-            //if (id != null)
-            //    await personalTrainingsDAL.DeletePersonalTrainingAsync((int)id);
-
-            return RedirectToAction("Index");
         }
     }
 }

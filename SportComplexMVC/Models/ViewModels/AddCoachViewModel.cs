@@ -19,6 +19,8 @@ namespace SportComplexMVC.Models.ViewModels
 
         [Display(Name = "Birth date")]
         public DateTime BirthDate { get; set; }
+        public DateTime MinBirthDate { get; set; }
+        public DateTime MaxBirthDate { get; set; }
 
         [Required]
         [MinLength(3), MaxLength(30)]

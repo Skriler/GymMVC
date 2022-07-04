@@ -14,7 +14,7 @@ namespace SportComplexMVC.Controllers
     [Authorize]
     public class GroupTrainingsController : Controller
     {
-        private GroupTrainingsDAL groupTrainingsDAL;
+        private readonly GroupTrainingsDAL groupTrainingsDAL;
         public GroupTrainingsController(ApplicationContext context)
         {
             groupTrainingsDAL = new GroupTrainingsDAL(context);
@@ -25,6 +25,14 @@ namespace SportComplexMVC.Controllers
         {
             List<GroupTraining> groupTrainings = await groupTrainingsDAL.GetGroupTrainingListAsync();
 
+            ViewData["IsJoinButton"] = false;
+
+            if (User.IsInRole("Client"))
+            {
+                if (!DataChecker.CheckIsCurrentClientInGroup(await groupTrainingsDAL.GetCurrentClientAsync(User)))
+                    ViewData["IsJoinButton"] = true;
+            }
+
             return View(groupTrainings);
         }
 
@@ -32,7 +40,7 @@ namespace SportComplexMVC.Controllers
         [HttpGet]
         public async Task<ActionResult> CreateAsync()
         {
-            Coach coach = await groupTrainingsDAL.GetCurrentCoach(User);
+            Coach coach = await groupTrainingsDAL.GetCurrentCoachAsync(User);
 
             AddGroupTrainingViewModel addViewModel = new AddGroupTrainingViewModel()
             {
@@ -63,7 +71,7 @@ namespace SportComplexMVC.Controllers
                     model.Date,
                     model.CoachId,
                     model.TrainingRoomId,
-                    await groupTrainingsDAL.GetClientsByGroupId(model.GroupId),
+                    await groupTrainingsDAL.GetClientsByGroupIdAsync(model.GroupId),
                     model.GroupId
                     ))
             {
