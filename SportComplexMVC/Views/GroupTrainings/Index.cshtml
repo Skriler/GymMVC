@@ -1,0 +1,58 @@
+﻿@model IEnumerable<GroupTraining>
+@{
+    ViewData["Title"] = "Group training list";
+}
+
+<div>
+    <h2 class="text-center">@ViewData["Title"]</h2>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (User.IsInRole("Coach"))
+        {
+            <p> @Html.ActionLink("Create new", "Create", "GroupTrainings", null, new { @class = "btn btn-info" }) </p>
+        }
+    }
+
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Date)</th>
+            <th>Coach</th>
+            <th>Group</th>
+            <th>Training Room</th>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <th>Actions</th>
+            }
+        </tr>
+        @foreach (GroupTraining groupTraining in Model)
+        {
+            <tr>
+                <td>@groupTraining.Date.ToShortDateString()</td>
+                <td>
+                    @groupTraining.Coach.ApplicationUser.FirstName
+                    @groupTraining.Coach.ApplicationUser.LastName
+                </td>
+                <td> @groupTraining.Group.Title </td>
+                <td>@Html.DisplayFor(modelItem => groupTraining.TrainingRoom.Title)</td>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <td>
+                        <form method="post">
+                            @Html.ActionLink("Group members", "Details", "Groups",
+                                new { id = groupTraining.GroupId },
+                                new { @class = "btn btn-warning" })
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <input type="submit" asp-action="Delete" asp-route-id="@groupTraining.Id" class="btn btn-danger" value="Delete" />
+                            }
+                        </form>
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+</div>

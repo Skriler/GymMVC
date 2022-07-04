@@ -51,6 +51,22 @@ namespace SportComplexMVC.Services.DAL
         {
             return await db.TrainingRooms.AsNoTracking().ToListAsync();
         }
+
+        public async Task<List<Group>> GetGroupListAsync()
+        {
+            return await db.Groups.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<List<PersonalTraining>> GetPersonalTrainingSimpleListAsync()
+        {
+            return await db.PersonalTrainings.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<List<GroupTraining>> GetGroupTrainingSimpleListAsync()
+        {
+            return await db.GroupTrainings.AsNoTracking().ToListAsync();
+        }
+
         public async Task<Client> GetCurrentClient(ClaimsPrincipal currentUser)
         {
             Client client = null;
@@ -83,6 +99,26 @@ namespace SportComplexMVC.Services.DAL
             }
 
             return coach;
+        }
+
+        public async Task<int> GetGroupIdByClient(ClaimsPrincipal currentUser)
+        {
+            Client client = await GetCurrentClient(currentUser);
+
+            if (client.GroupId == null)
+                return -1;
+
+            return (int)client.GroupId;
+        }
+
+        public async Task<List<Client>> GetClientsByGroupId(int groupId)
+        {
+            List<Client> clients = await db.Clients
+                .Where(c => c.GroupId == groupId)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return clients;
         }
     }
 }

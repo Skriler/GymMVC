@@ -131,5 +131,14 @@ namespace SportComplexMVC.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<RedirectToActionResult> DeleteClientFromGroupAsync(int? id)
+        {
+            if (id != null)
+                await clientsDAL.DeleteClientFromGroupAsync((int)id);
+
+            return RedirectToAction("Index", "GroupTrainings");
+        }
     }
 }

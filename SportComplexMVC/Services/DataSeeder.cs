@@ -81,9 +81,15 @@ namespace SportComplexMVC.Services
             if (!anyCoaches)
                 await db.Coaches.AddRangeAsync(DataCreator.GetCoachList());
 
+            bool anyGroups = await db.Groups.AnyAsync();
+            if (!anyGroups)
+                await db.Groups.AddRangeAsync(DataCreator.GetGroupList());
+
+            await db.SaveChangesAsync();
+
             bool anyClients = await db.Clients.AnyAsync();
             if (!anyClients)
-                await db.Clients.AddRangeAsync(DataCreator.GetClientList());
+                await db.Clients.AddRangeAsync(DataCreator.GetClientList(await db.Groups.ToListAsync()));
 
             await db.SaveChangesAsync();
         }
@@ -94,9 +100,9 @@ namespace SportComplexMVC.Services
             if (!anyPersonalTrainings)
                 await db.PersonalTrainings.AddRangeAsync(DataCreator.GetPersonalTrainingList());
 
-            //bool anyGroupTrainings = await db.GroupTrainings.AnyAsync();
-            //if (!anyGroupTrainings)
-            //    await db.GroupTrainings.AddRangeAsync(DataCreator.GetGroupTrainingList());
+            bool anyGroupTrainings = await db.GroupTrainings.AnyAsync();
+            if (!anyGroupTrainings)
+                await db.GroupTrainings.AddRangeAsync(DataCreator.GetGroupTrainingList());
 
             await db.SaveChangesAsync();
         }

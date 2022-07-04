@@ -5,19 +5,21 @@ using SportComplexMVC.Models.Entities;
 
 namespace SportComplexMVC.Models.ViewModels
 {
-    public class AddPersonalTrainingViewModel
+    public class AddGroupTrainingViewModel
     {
         [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime Date { get ; set; }
+        public DateTime Date { get; set; }
         public DateTime MinDate { get; set; }
         public DateTime MaxDate { get; set; }
 
         [Required]
-        public int ClientId { get; set; }
+        public int CoachId { get; set; }
 
         [Required]
-        public int CoachId { get; set; }
+        [Display(Name = "Group")]
+        public int GroupId { get; set; }
+        public List<Group> Groups { get; set; }
 
         [Required]
         [Display(Name = "Training Room")]

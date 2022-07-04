@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SportComplexMVC.Models.DataDb;
 using SportComplexMVC.Models.Entities;
 using SportComplexMVC.Models.ViewModels;
-using SportComplexMVC.Enums;
 
 namespace SportComplexMVC.Services.DAL
 {

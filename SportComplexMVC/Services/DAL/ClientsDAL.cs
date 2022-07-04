@@ -110,5 +110,16 @@ namespace SportComplexMVC.Services.DAL
                 await db.SaveChangesAsync();
             }
         }
+
+        public async Task DeleteClientFromGroupAsync(int id)
+        {
+            Client client = await db.Clients.FindAsync(id);
+
+            if (client != null)
+            {
+                client.GroupId = null;
+                await db.SaveChangesAsync();
+            }
+        }
     }
 }

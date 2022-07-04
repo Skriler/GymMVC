@@ -10,6 +10,16 @@ namespace SportComplexMVC.Models.Entities
 
         public string Title { get; set; }
 
-        public ICollection<Client> Clients { get; set; } 
+        public List<Client> Clients { get; set; } 
+        public Group()
+        {
+            Clients = new List<Client>();
+        }
+
+        public Group(string title)
+            : this()
+        {
+            Title = title;
+        }
     }
 }

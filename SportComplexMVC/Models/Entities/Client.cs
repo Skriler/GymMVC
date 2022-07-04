@@ -13,6 +13,9 @@ namespace SportComplexMVC.Models.Entities
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
+        public int? GroupId { get; set; }
+        public Group Group { get; set; }
+
         public Client() { }
 
         public Client(int clientStatusId, string applicationUserId)

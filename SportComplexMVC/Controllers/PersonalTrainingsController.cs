@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using SportComplexMVC.Models.Entities;
 using SportComplexMVC.Models.DataDb;
 using SportComplexMVC.Services.DAL;
@@ -91,19 +90,17 @@ namespace SportComplexMVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            if (!DataChecker.CheckIsCoachAvailable(
-                    await personalTrainingsDAL.GetPersonalTrainingListAsync(),
-                    model.Date, model.CoachId))
+            if (!DataChecker.CheckIsDateAvailable(
+                    await personalTrainingsDAL.GetPersonalTrainingSimpleListAsync(),
+                    await personalTrainingsDAL.GetGroupTrainingSimpleListAsync(),
+                    model.Date, 
+                    model.CoachId,
+                    model.TrainingRoomId,
+                    new List<Client> { personalTrainingsDAL.GetCurrentClient(User).Result } ,
+                    await personalTrainingsDAL.GetGroupIdByClient(User)
+                    ))
             {
-                ModelState.AddModelError(string.Empty, "Coach will not available at this date");
-                return View(model);
-            }
-
-            if (!DataChecker.CheckIsRoomAvailable(
-                await personalTrainingsDAL.GetPersonalTrainingListAsync(),
-                model.Date, model.TrainingRoomId))
-            {
-                ModelState.AddModelError(string.Empty, "Training Room will not available at this date");
+                ModelState.AddModelError(string.Empty, "This time is not available");
                 return View(model);
             }
 

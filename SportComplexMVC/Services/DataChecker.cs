@@ -8,22 +8,48 @@ namespace SportComplexMVC.Services
 {
     public static class DataChecker
     {
-        public static bool CheckIsCoachAvailable(List<PersonalTraining> trainings, DateTime selectedDate, int coachId)
+        public static bool CheckIsDateAvailable(
+            List<PersonalTraining> personalTrainings, 
+            List<GroupTraining> groupTrainings, 
+            DateTime selectedDate, 
+            int coachId, 
+            int roomId,
+            List<Client> clients,
+            int groupId
+            )
         {
-            foreach(PersonalTraining training in trainings)
+            foreach(PersonalTraining personalTraining in personalTrainings)
             {
-                if (training.Date == selectedDate && training.CoachId == coachId)
+                if (personalTraining.Date == selectedDate && personalTraining.CoachId == coachId)
+                    return false;
+
+                if (personalTraining.Date == selectedDate && personalTraining.TrainingRoomId == roomId)
+                    return false;
+
+                if (personalTraining.Date == selectedDate && !CheckIsClientsAvailableAtDate(personalTraining, clients))
+                    return false; 
+            }
+
+            foreach (GroupTraining groupTraining in groupTrainings)
+            {
+                if (groupTraining.Date == selectedDate && groupTraining.CoachId == coachId)
+                    return false;
+
+                if (groupTraining.Date == selectedDate && groupTraining.TrainingRoomId == roomId)
+                    return false;
+
+                if (groupTraining.Date == selectedDate && groupTraining.GroupId == groupId)
                     return false;
             }
 
             return true;
         }
 
-        public static bool CheckIsRoomAvailable(List<PersonalTraining> trainings, DateTime selectedDate, int roomId)
+        private static bool CheckIsClientsAvailableAtDate(PersonalTraining personalTraining, List<Client> clients)
         {
-            foreach (PersonalTraining training in trainings)
+            foreach (Client client in clients)
             {
-                if (training.Date == selectedDate && training.TrainingRoomId == roomId)
+                if (personalTraining.ClientId == client.Id)
                     return false;
             }
 

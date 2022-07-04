@@ -23,6 +23,8 @@ namespace SportComplexMVC.Models.Entities
         public int TrainingRoomId { get; set; }
         public TrainingRoom TrainingRoom { get; set; }
 
+        public PersonalTraining() { }
+
         public PersonalTraining(DateTime date, int coachId, int clientId, int trainingRoomId)
         {
             Date = date;

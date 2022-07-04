@@ -123,24 +123,42 @@ namespace SportComplexMVC.Services
             List<Coach> coaches = new List<Coach>();
 
             Coach coach;
-            for (int i = 1; i <= 5; ++i)
+            for (int i = 0; i < 5; ++i)
             {
-                coach = new Coach(rand.Next(1, positionsAmount), rand.Next(1, specializationsAmount), users[i - 1].Id);
+                coach = new Coach(rand.Next(1, positionsAmount), rand.Next(1, specializationsAmount), users[i].Id);
                 coaches.Add(coach);
             }
 
             return coaches;
         }
 
-        public static List<Client> GetClientList()
+        public static List<Group> GetGroupList()
+        {
+            List<Group> groups = new List<Group>()
+            {
+                new Group("NSA172"),
+                new Group("HMK195"),
+                new Group("LKY163"),
+                new Group("BGH127"),
+            };
+
+            return groups;
+        }
+
+        public static List<Client> GetClientList(List<Group> groups)
         {
             List<Client> clients = new List<Client>();
-
             Client client;
-            for (int i = 1; i <= 15; ++i)
+            int groupNumber;
+
+            for (int i = 0; i < 15; ++i)
             {
-                client = new Client(rand.Next(1, clientStatusesAmount), users[i + 4].Id);
-                clients.Add(client);
+                groupNumber = i % groups.Count;
+
+                client = new Client(rand.Next(1, clientStatusesAmount), users[i + 5].Id);
+                client.GroupId = groups[groupNumber].Id;
+
+                clients.Add(client);   
             }
 
             return clients;
@@ -188,16 +206,16 @@ namespace SportComplexMVC.Services
         {
             List<GroupTraining> groupTrainings = new List<GroupTraining>()
             {
-                new GroupTraining(DateTime.Today.AddDays(-1), 2, 5, 1),
-                new GroupTraining(DateTime.Today.AddDays(-1), 3, 7, 10),
-                new GroupTraining(DateTime.Today.AddDays(-2), 2, 9, 3),
-                new GroupTraining(DateTime.Today.AddDays(-2), 4, 2, 6),
-                new GroupTraining(DateTime.Today.AddDays(-3), 1, 1, 8),
-                new GroupTraining(DateTime.Today.AddDays(-3), 3, 10, 4),
-                new GroupTraining(DateTime.Today.AddDays(-4), 2, 11, 5),
-                new GroupTraining(DateTime.Today.AddDays(-4), 4, 6, 7),
-                new GroupTraining(DateTime.Today.AddDays(-5), 3, 8, 9),
-                new GroupTraining(DateTime.Today.AddDays(-5), 4, 2, 2),
+                new GroupTraining(DateTime.Today.AddDays(2), 1, 1, 2),
+                new GroupTraining(DateTime.Today.AddDays(2), 4, 3, 7),
+                new GroupTraining(DateTime.Today.AddDays(1), 1, 2, 7),
+                new GroupTraining(DateTime.Today.AddDays(1), 3, 1, 1),
+                new GroupTraining(DateTime.Today, 4, 1, 10),
+                new GroupTraining(DateTime.Today, 5, 2, 9),
+                new GroupTraining(DateTime.Today.AddDays(-1), 1, 4, 4),
+                new GroupTraining(DateTime.Today.AddDays(-1), 5, 1, 3),
+                new GroupTraining(DateTime.Today.AddDays(-2), 1, 2, 5),
+                new GroupTraining(DateTime.Today.AddDays(-2), 2, 4, 8),
             };
 
             return groupTrainings;

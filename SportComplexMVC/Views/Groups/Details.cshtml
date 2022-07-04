@@ -1,0 +1,41 @@
+﻿@model Group
+@{
+    ViewData["Title"] = "Group members";
+}
+
+<div>
+    <h2 class="text-center">@Model.Title</h2>
+
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Clients[0].ApplicationUser.FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.Clients[0].ApplicationUser.LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.Clients[0].ApplicationUser.Gender.Title)</th>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Actions</th>
+            }
+        </tr>
+        @foreach (Client client in Model.Clients)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => client.ApplicationUser.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => client.ApplicationUser.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => client.ApplicationUser.Gender.Title)</td>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <form method="post">
+                            <input type="submit" asp-action="DeleteClientFromGroup" asp-controller="Clients"
+                                   asp-route-id="@client.Id" class="btn btn-danger" value="Kick" />
+                        </form>
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+
+    @Html.ActionLink("Back to list", "Index", "GroupTrainings", null, new { @class = "btn btn-info" })
+</div>
